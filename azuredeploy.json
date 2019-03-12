@@ -32,7 +32,7 @@
       }
     },
     {
-      "apiVersion": "2014-06-01",
+      "apiVersion": "2015-08-01",
       "name": "[parameters('siteName')]",
       "type": "Microsoft.Web/Sites",
       "location": "[parameters('siteLocation')]",
@@ -49,6 +49,23 @@
       "resources": [
         {
           "apiVersion": "2014-04-01",
+          "type": "config",
+          "name": "web",
+          "dependsOn": [
+            "[concat('Microsoft.Web/Sites/', parameters('siteName'))]"
+          ],
+          "properties": {
+            "alwaysOn": true,
+			"requestTracingEnabled": true,
+			"requestTracingExpirationTime": "9999-12-31T23:59:00Z",
+			"httpLoggingEnabled": true,
+			"logsDirectorySizeLimit": 35,
+			"detailedErrorLoggingEnabled": false,
+            "IsManualIntegration": true
+          }
+        },
+        {
+          "apiVersion": "2014-04-01",
           "name": "web",
           "type": "sourcecontrols",
           "dependsOn": [
@@ -60,68 +77,50 @@
             "branch": "[parameters('branch')]",
             "IsManualIntegration": true
           }
-        }
-      ]
-    },
-	{
-		"type": "Microsoft.Web/sites/config",
-		"name": "[concat(parameters('siteName'), '/web')]",
-		"apiVersion": "2016-08-01",
-		"properties": {
-			"requestTracingEnabled": true,
-			"requestTracingExpirationTime": "9999-12-31T23:59:00Z",
-			"httpLoggingEnabled": true,
-			"logsDirectorySizeLimit": 35,
-			"detailedErrorLoggingEnabled": false,
-			"RepoUrl": "[parameters('repoUrl')]",
-            "branch": "[parameters('branch')]",
-            "IsManualIntegration": true,
-			"alwaysOn": true
-		},
-		"dependsOn": [
-			"[resourceId('Microsoft.Web/sites', parameters('siteName'))]"
-		],
-		"resources": [
-        {
-          "apiVersion": "2018-02-01",
-          "name": "logs",
+        },
+		{
+          "apiVersion": "2015-08-01",
           "type": "config",
-          "properties": { 
-			"applicationLogs": {
-			  "fileSystem": {
-				"level": "Off"
-			  },
-			  "azureTableStorage": {
-				"level": "Off",
-				"sasUrl": null
-			  },
-			  "azureBlobStorage": {
-				"level": "Off",
-				"sasUrl": null,
-				"retentionInDays": null
-			  }
-			},
-			"httpLogs": {
-			  "fileSystem": {
-				"retentionInMb": 35,
-				"retentionInDays": 1,
-				"enabled": true
-			  },
-			  "azureBlobStorage": {
-				"sasUrl": null,
-				"retentionInDays": 1,
-				"enabled": false
-			  }
-			},
-			"failedRequestsTracing": {
-			  "enabled": true
-			},
-			"detailedErrorMessages": {
-			  "enabled": false
-			}
+		  "name": "logs",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites',variables('siteName'))]"
+          ],
+          "properties": {
+            "applicationLogs": {
+              "fileSystem": {
+                "level": "Off"
+              },
+              "azureTableStorage": {
+                "level": "Off",
+                "sasUrl": null
+              },
+              "azureBlobStorage": {
+                "level": "Verbose",
+                "sasUrl": "url",
+                "retentionInDays": 1
+              },
+              "httpLogs": {
+                "fileSystem": {
+                  "retentionInMb": 35,
+                  "retentionInDays": 1,
+                  "enabled": true
+                },
+                "azureBlobStorage": {
+                  "sasUrl": "url",
+                  "retentionInDays": 7,
+                  "enabled": true
+                }
+              },
+              "failedRequestsTracing": {
+                "enabled": true
+              },
+              "detailedErrorMessages": {
+                "enabled": false
+              }
+            }
           }
         }
       ]
-	}
+    }
   ]
 }
