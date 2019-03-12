@@ -72,6 +72,7 @@
 			"requestTracingExpirationTime": "9999-12-31T23:59:00Z",
 			"httpLoggingEnabled": true,
 			"logsDirectorySizeLimit": 35,
+			"detailedErrorLoggingEnabled": false,
 			"RepoUrl": "[parameters('repoUrl')]",
             "branch": "[parameters('branch')]",
             "IsManualIntegration": true,
@@ -79,7 +80,48 @@
 		},
 		"dependsOn": [
 			"[resourceId('Microsoft.Web/sites', parameters('siteName'))]"
-		]
+		],
+		"resources": [
+        {
+          "apiVersion": "2018-02-01",
+          "name": "logs",
+          "type": "config",
+          "properties": 
+			"applicationLogs": {
+			  "fileSystem": {
+				"level": "Off"
+			  },
+			  "azureTableStorage": {
+				"level": "Off",
+				"sasUrl": null
+			  },
+			  "azureBlobStorage": {
+				"level": "Off",
+				"sasUrl": null,
+				"retentionInDays": null
+			  }
+			},
+			"httpLogs": {
+			  "fileSystem": {
+				"retentionInMb": 35,
+				"retentionInDays": 1,
+				"enabled": true
+			  },
+			  "azureBlobStorage": {
+				"sasUrl": null,
+				"retentionInDays": 1,
+				"enabled": false
+			  }
+			},
+			"failedRequestsTracing": {
+			  "enabled": true
+			},
+			"detailedErrorMessages": {
+			  "enabled": false
+			}
+          }
+        }
+      ]
 	}
   ]
 }
