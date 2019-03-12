@@ -32,7 +32,7 @@
       }
     },
     {
-      "apiVersion": "2015-08-01",
+      "apiVersion": "2018-02-01",
       "name": "[parameters('siteName')]",
       "type": "Microsoft.Web/Sites",
       "location": "[parameters('siteLocation')]",
@@ -44,11 +44,12 @@
       },
       "properties": {
         "name": "[parameters('siteName')]",
-        "serverFarm": "[parameters('hostingPlanName')]"
+        "serverFarm": null,
+		"serverFarmId": "[resourceId('Microsoft.Web/serverFarms', parameters('hostingPlanName'))]",
       },
       "resources": [
         {
-          "apiVersion": "2014-04-01",
+          "apiVersion": "2018-02-01",
           "type": "config",
           "name": "web",
           "dependsOn": [
@@ -65,7 +66,7 @@
           }
         },
         {
-          "apiVersion": "2014-04-01",
+          "apiVersion": "2018-02-01",
           "name": "web",
           "type": "sourcecontrols",
           "dependsOn": [
@@ -79,7 +80,7 @@
           }
         },
 		{
-          "apiVersion": "2015-08-01",
+          "apiVersion": "2018-02-01",
           "type": "config",
 		  "name": "logs",
           "dependsOn": [
