@@ -69,7 +69,11 @@
           "properties": {
             "RepoUrl": "[parameters('repoUrl')]",
             "branch": "[parameters('branch')]",
-            "IsManualIntegration": true
+            "IsManualIntegration": true,
+			"requestTracingEnabled": true,
+			"requestTracingExpirationTime": "9999-12-31T23:59:00Z",
+			"httpLoggingEnabled": true,
+			"logsDirectorySizeLimit": 35,
           }
         }
       ]
