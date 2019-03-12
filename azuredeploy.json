@@ -87,38 +87,38 @@
             "[resourceId('Microsoft.Web/sites',parameters('siteName'))]"
           ],
           "properties": {
-            "applicationLogs": {
-              "fileSystem": {
-                "level": "Off"
-              },
-              "azureTableStorage": {
-                "level": "Off",
-                "sasUrl": null
-              },
-              "azureBlobStorage": {
-                "level": "Verbose",
-                "sasUrl": "url",
-                "retentionInDays": 1
-              },
-              "httpLogs": {
-                "fileSystem": {
-                  "retentionInMb": 35,
-                  "retentionInDays": 1,
-                  "enabled": true
-                },
-                "azureBlobStorage": {
-                  "sasUrl": "url",
-                  "retentionInDays": 7,
-                  "enabled": true
-                }
-              },
-              "failedRequestsTracing": {
-                "enabled": true
-              },
-              "detailedErrorMessages": {
-                "enabled": false
-              }
-            }
+			"applicationLogs": {
+			  "fileSystem": {
+				"level": "Off"
+			  },
+			  "azureTableStorage": {
+				"level": "Off",
+				"sasUrl": null
+			  },
+			  "azureBlobStorage": {
+				"level": "Off",
+				"sasUrl": null,
+				"retentionInDays": null
+			  }
+			},
+			"httpLogs": {
+			  "fileSystem": {
+				"retentionInMb": 35,
+				"retentionInDays": 1,
+				"enabled": true
+			  },
+			  "azureBlobStorage": {
+				"sasUrl": null,
+				"retentionInDays": 1,
+				"enabled": false
+			  }
+			},
+			"failedRequestsTracing": {
+			  "enabled": true
+			},
+			"detailedErrorMessages": {
+			  "enabled": false
+			}
           }
         }
       ]
