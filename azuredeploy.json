@@ -83,7 +83,7 @@
           "type": "config",
 		  "name": "logs",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites',variables('siteName'))]"
+            "[resourceId('Microsoft.Web/sites',parameters('siteName'))]"
           ],
           "properties": {
             "applicationLogs": {
