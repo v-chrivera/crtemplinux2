@@ -1,31 +1,22 @@
 {
   "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-    "siteName": {
-      "type": "string"
-    },
-    "hostingPlanName": {
-      "type": "string"
-    },
-    "siteLocation": {
-      "type": "string"
-    },
-    "repoUrl": {
-      "type": "string"
-    },
-    "branch": {
-      "type": "string"
-    }
+  "variables": {
+    "hostingPlanName": "[replace(resourceGroup().name,'.','')]",
+    "siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
+    "sku": "s1",
+    "workerSize": "0",
+    "repoURL": "https://github.com/4lowtherabbit/LabCrashFromBackground.git",
+    "branch": "master"
   },
   "resources": [
     {
       "apiVersion": "2014-06-01",
-      "name": "[parameters('hostingPlanName')]",
+      "name": "[variables('hostingPlanName')]",
       "type": "Microsoft.Web/serverFarms",
-      "location": "[parameters('siteLocation')]",
+      "location": "[variables('siteLocation')]",
       "properties": {
-        "name": "[parameters('hostingPlanName')]",
+        "name": "[variables('hostingPlanName')]",
         "sku": "Standard",
         "workerSize": "0",
         "numberOfWorkers": 1
@@ -33,19 +24,19 @@
     },
     {
       "apiVersion": "2018-02-01",
-      "name": "[parameters('siteName')]",
+      "name": "[variables('siteName')]",
       "type": "Microsoft.Web/Sites",
-      "location": "[parameters('siteLocation')]",
+      "location": "[variables('siteLocation')]",
       "dependsOn": [
-        "[concat('Microsoft.Web/serverFarms/', parameters('hostingPlanName'))]"
+        "[concat('Microsoft.Web/serverFarms/', variables('hostingPlanName'))]"
       ],
       "tags": {
-        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "empty"
+        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('hostingPlanName'))]": "empty"
       },
       "properties": {
-        "name": "[parameters('siteName')]",
+        "name": "[variables('siteName')]",
         "serverFarm": null,
-		"serverFarmId": "[resourceId('Microsoft.Web/serverFarms', parameters('hostingPlanName'))]",
+	"serverFarmId": "[resourceId('Microsoft.Web/serverFarms', variables('hostingPlanName'))]"
       },
       "resources": [
         {
@@ -53,7 +44,7 @@
           "type": "config",
           "name": "web",
           "dependsOn": [
-            "[concat('Microsoft.Web/Sites/', parameters('siteName'))]"
+            "[concat('Microsoft.Web/Sites/', variables('siteName'))]"
           ],
           "properties": {
             "alwaysOn": true,
@@ -70,21 +61,21 @@
           "name": "web",
           "type": "sourcecontrols",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', parameters('siteName'))]",
-            "[concat('Microsoft.Web/Sites/', parameters('siteName'), '/config/web')]"
+            "[resourceId('Microsoft.Web/Sites', variables('siteName'))]",
+            "[concat('Microsoft.Web/Sites/', variables('siteName'), '/config/web')]"
           ],
           "properties": {
-            "RepoUrl": "[parameters('repoUrl')]",
-            "branch": "[parameters('branch')]",
+            "RepoUrl": "[variables('repoUrl')]",
+            "branch": "[variables('branch')]",
             "IsManualIntegration": true
           }
         },
-		{
+        {
           "apiVersion": "2018-02-01",
           "type": "config",
-		  "name": "logs",
+          "name": "logs",
           "dependsOn": [
-            "[resourceId('Microsoft.Web/sites',parameters('siteName'))]"
+            "[resourceId('Microsoft.Web/sites',variables('siteName'))]"
           ],
           "properties": {
 			"applicationLogs": {
