@@ -6,7 +6,7 @@
     "siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
     "sku": "s1",
     "workerSize": "0",
-    "repoURL": "https://github.com/4lowtherabbit/LabCrashFromBackground.git",
+    "repoURL": "https://github.com/4lowtherabbit/LabAppInit.git",
     "branch": "master"
   },
   "resources": [
@@ -14,7 +14,7 @@
       "apiVersion": "2014-06-01",
       "name": "[variables('hostingPlanName')]",
       "type": "Microsoft.Web/serverFarms",
-      "location": "[variables('siteLocation')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "name": "[variables('hostingPlanName')]",
         "sku": "Standard",
@@ -26,7 +26,7 @@
       "apiVersion": "2018-02-01",
       "name": "[variables('siteName')]",
       "type": "Microsoft.Web/Sites",
-      "location": "[variables('siteLocation')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[concat('Microsoft.Web/serverFarms/', variables('hostingPlanName'))]"
       ],
