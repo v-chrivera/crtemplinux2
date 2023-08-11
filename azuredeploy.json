@@ -6,7 +6,7 @@
     "siteName": "crtemplinux01",
     "sku": "s1",
     "workerSize": "0",
-    "repoURL": "https://github.com/4lowtherabbit/LabAppInit.git",
+    "repoURL": "https://github.com/v-chrivera/crtemplinux2",
     "branch": "master"
   },
   "resources": [
