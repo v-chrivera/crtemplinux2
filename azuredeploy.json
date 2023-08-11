@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "variables": {
     "hostingPlanName": "crtemplinuxplan",
-    "siteName": "crtemplinux01",
+    "siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
     "sku": "s1",
     "workerSize": "0",
     "repoURL": "https://github.com/v-chrivera/crtemplinux2",
