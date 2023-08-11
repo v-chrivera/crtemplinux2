@@ -2,8 +2,8 @@
   "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "variables": {
-    "hostingPlanName": "[replace(resourceGroup().name,'.','')]",
-    "siteName": "[concat(toLower(variables('hostingPlanName')), uniqueString(resourceGroup().id))]",
+    "hostingPlanName": "crtemplinuxplan",
+    "siteName": "crtemplinux01",
     "sku": "s1",
     "workerSize": "0",
     "repoURL": "https://github.com/4lowtherabbit/LabAppInit.git",
